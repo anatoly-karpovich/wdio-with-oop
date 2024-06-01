@@ -1,8 +1,8 @@
-import type { IProductResponse } from "../../types/products/product.types.js";
+import type { IProductFromResponse } from "../../types/products/product.types.js";
 
 export class CreatedProducts {
   private static instance: CreatedProducts;
-  private products: IProductResponse[] = [];
+  private products: IProductFromResponse[] = [];
 
   constructor() {
     if (CreatedProducts.instance) {
@@ -11,7 +11,7 @@ export class CreatedProducts {
     CreatedProducts.instance = this;
   }
 
-  addProduct(product: IProductResponse) {
+  addProduct(product: IProductFromResponse) {
     const productIndex = this.products.findIndex((p) => p._id === product._id);
     if (productIndex !== -1) {
       this.updateProduct(product, productIndex);
@@ -20,7 +20,7 @@ export class CreatedProducts {
     }
   }
 
-  updateProduct(product: IProductResponse, productIndex: number = this.products.length - 1) {
+  updateProduct(product: IProductFromResponse, productIndex: number = this.products.length - 1) {
     this.products[productIndex] = product;
   }
 
