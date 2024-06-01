@@ -1,5 +1,5 @@
 import { IUserCredentials } from "../../../types/user/user.types.js";
-import { SalesPortalPage } from "../salesPortal.page.js";
+import { SalesPortalPage } from "../base/salesPortal.page.js";
 
 class SignInPage extends SalesPortalPage {
   readonly "Email input" = "#emailinput";

@@ -3,10 +3,13 @@ import type { ILoginResponse, IUserCredentials } from "../../types/user/user.typ
 import { apiConfig } from "../../api/config/apiConfig.js";
 import { logStep } from "../../utils/reporter/decorators.js";
 import { ApiClientFactory } from "../apiClients/apiClientFactory.js";
+import { BaseApiClient } from "../apiClients/baseApiClient.js";
 
-const apiClient = ApiClientFactory.getClient();
-
-class SignInService {
+export class SignInApiService {
+  private apiClient: BaseApiClient;
+  constructor() {
+    this.apiClient = ApiClientFactory.getClient();
+  }
   @logStep("Sign in via API")
   async login(credentials: IUserCredentials) {
     const options: IRequestOptions = {
@@ -16,7 +19,6 @@ class SignInService {
       headers: { "Content-Type": "application/json" },
       data: credentials,
     };
-    return apiClient.sendRequest<ILoginResponse>(options);
+    return this.apiClient.sendRequest<ILoginResponse>(options);
   }
 }
-export default new SignInService();

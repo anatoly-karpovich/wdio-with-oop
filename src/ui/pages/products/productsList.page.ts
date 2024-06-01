@@ -1,8 +1,8 @@
-import { SalesPortalPage } from "../salesPortal.page.js";
+import { SalesPortalPage } from "../base/salesPortal.page.js";
 
 class ProductsListPage extends SalesPortalPage {
   get ["Add new product button"]() {
-    return $("button.page-title-header");
+    return "button.page-title-header";
   }
 
   get ["Table row selector"]() {
@@ -39,6 +39,10 @@ class ProductsListPage extends SalesPortalPage {
 
   get ["Delete button by product name"]() {
     return (productName: string) => `${this["Actions by product name"](productName)}/button[@title="Delete"]`;
+  }
+
+  async clickOnAddNewProductButton() {
+    await this.click(this["Add new product button"]);
   }
 }
 

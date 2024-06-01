@@ -1,5 +1,6 @@
 import type { Options } from "@wdio/types";
 import * as dotenv from "dotenv";
+import { TESTS } from "./src/config/environment.js";
 
 dotenv.config();
 
@@ -35,7 +36,7 @@ export const config: Options.Testrunner = {
   //
   specs: [
     // ToDo: define location for spec files here
-    `${process.cwd()}/src/ui/**/*.test.ts`,
+    `${process.cwd()}/src/${TESTS === "ui" ? "ui" : "api"}/**/*.test.ts`,
   ],
   // Patterns to exclude.
   exclude: [

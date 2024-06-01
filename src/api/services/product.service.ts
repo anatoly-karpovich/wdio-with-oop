@@ -1,12 +1,15 @@
 import { IRequestOptions } from "../../types/api/apiClient.types.js";
-import type { IProduct, IProductResponse } from "../../types/products/product.types.js";
+import type { IProduct, IProductResponse, IProductsResponse } from "../../types/products/product.types.js";
 import { apiConfig } from "../../api/config/apiConfig.js";
 import { logStep } from "../../utils/reporter/decorators.js";
 import { ApiClientFactory } from "../apiClients/apiClientFactory.js";
+import { BaseApiClient } from "../apiClients/baseApiClient.js";
 
-const apiClient = ApiClientFactory.getClient();
-
-class ProductsService {
+export class ProductsApiService {
+  private apiClient: BaseApiClient;
+  constructor() {
+    this.apiClient = ApiClientFactory.getClient();
+  }
   @logStep("Get product via API")
   async getById(id: string, token: string) {
     const options: IRequestOptions = {
@@ -15,7 +18,7 @@ class ProductsService {
       method: "get",
       headers: { "Content-Type": "application/json", Authorization: token },
     };
-    return apiClient.sendRequest<IProductResponse>(options);
+    return this.apiClient.sendRequest<IProductResponse>(options);
   }
 
   @logStep("Get all products via API")
@@ -26,7 +29,7 @@ class ProductsService {
       method: "get",
       headers: { "Content-Type": "application/json", Authorization: token },
     };
-    return apiClient.sendRequest<IProductResponse>(options);
+    return this.apiClient.sendRequest<IProductsResponse>(options);
   }
 
   @logStep("Create product via API")
@@ -38,7 +41,7 @@ class ProductsService {
       headers: { "Content-Type": "application/json", Authorization: token },
       data: data,
     };
-    return apiClient.sendRequest<IProductResponse>(options);
+    return await this.apiClient.sendRequest<IProductResponse>(options);
   }
 
   @logStep("Update product via API")
@@ -50,7 +53,7 @@ class ProductsService {
       headers: { "Content-Type": "application/json", Authorization: token },
       data: data,
     };
-    return apiClient.sendRequest<IProductResponse>(options);
+    return this.apiClient.sendRequest<IProductResponse>(options);
   }
 
   @logStep("Delete product via API")
@@ -61,8 +64,6 @@ class ProductsService {
       method: "delete",
       headers: { "Content-Type": "application/json", Authorization: token },
     };
-    return apiClient.sendRequest<null>(options);
+    return this.apiClient.sendRequest<null>(options);
   }
 }
-
-export default new ProductsService();

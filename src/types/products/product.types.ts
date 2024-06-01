@@ -18,7 +18,7 @@ export interface IProductResponse extends IResponseFields {
 }
 
 export interface IProductsResponse extends IResponseFields {
-  Product: IProductFromResponse[];
+  Products: IProductFromResponse[];
 }
 
 export const manufacturerNames = ["Apple", "Samsung", "Google", "Microsoft", "Sony", "Xiaomi", "Amazon", "Tesla"] as const;

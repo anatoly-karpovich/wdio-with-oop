@@ -18,6 +18,8 @@
   },
   "scripts": {
     "wdio": "wdio run ./wdio.conf.ts",
+    "test:ui": "cross-env TESTS=ui npm run wdio",
+    "test:api": "cross-env TESTS=api npm run wdio",
     "report-create": "allure generate allure-results -o allure-report --clean",
     "report-open": "npm run report-create && allure open allure-report"
   },
@@ -27,6 +29,7 @@
     "ajv": "^8.14.0",
     "axios": "^1.7.2",
     "chai": "^5.1.1",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
     "lodash": "^4.17.21",
     "moment": "^2.30.1",
