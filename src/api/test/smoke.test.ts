@@ -17,12 +17,7 @@ describe("Product Api tests", () => {
       headers: { "Content-Type": "application/json" },
       data: { username: "aqacourse@gmail.com", password: "password" },
     };
-    // const signInResponse = await fetch("https://aqa-course-project.app//api/login/", {
-    //   method: "post",
-    //   body: JSON.stringify({ username: "aqacourse@gmail.com", password: "password" }),
-    //   headers: { "Content-Type": "application/json" },
-    // });
-    // const sn = await signInResponse.json();
+
     const sn = await apiClient.sendRequest<ILoginResponse>(requestData);
     console.log(sn);
     const token = sn.data.token;
@@ -35,18 +30,14 @@ describe("Product Api tests", () => {
       manufacturer: "Apple",
     };
 
-    const productResponse = await fetch("https://aqa-course-project.app//api/products/", {
+    const productRequestData: IRequestOptions = {
       method: "post",
-      body: JSON.stringify(productData),
+      baseURL: "https://aqa-course-project.app/",
+      url: "/api/products/",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-    });
-
-    const productResponseBody = await productResponse.json();
-
+      data: productData,
+    };
+    const productResponseBody = await apiClient.sendRequest(productRequestData);
     console.log(productResponseBody);
   });
-
-  // afterEach(async () => {
-  //   await productService.delete(id, token);
-  // });
 });

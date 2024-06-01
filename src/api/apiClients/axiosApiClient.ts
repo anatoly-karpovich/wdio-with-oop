@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { BaseApiClient } from "./baseApiClient.js";
-// import ReporterService from "../../utils/reporter/reporter.js";
-// import LoggerService from "../../utils/logger/logger.js";
+import ReporterService from "../../utils/reporter/reporter.js";
+import LoggerService from "../../utils/logger/logger.js";
 
 class AxiosApiClient extends BaseApiClient {
   protected createRequestInstance() {
@@ -31,4 +31,4 @@ class AxiosApiClient extends BaseApiClient {
   }
 }
 
-export default new AxiosApiClient();
+export default new AxiosApiClient(ReporterService, LoggerService);

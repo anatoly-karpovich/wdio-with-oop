@@ -17,7 +17,7 @@ export abstract class BaseReporter {
   /**
    * Attaches logs from Logger to report
    */
-  public abstract attachLog(log: string): void 
+  public abstract attachLog(log: string): void;
 
   /**
    * Attaches request and response data to report

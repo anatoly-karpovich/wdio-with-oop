@@ -1,8 +1,8 @@
-// import fieldsToHideInReport from "../../data/report/fieldsToHideInReport.js";
+import fieldsToHideInReport from "../../data/report/fieldsToHideInReport.js";
 import { IRequestOptions, IResponse } from "../../types/api/apiClient.types.js";
-// import { Logger } from "../../utils/logger/loggers/baseLogger.js";
-// import { hideValueInObject } from "../../utils/object/index.js";
-// import { BaseReporter } from "../../utils/reporter/baseReporter.js";
+import { Logger } from "../../utils/logger/loggers/baseLogger.js";
+import { hideValueInObject } from "../../utils/object/index.js";
+import { BaseReporter } from "../../utils/reporter/baseReporter.js";
 
 export abstract class BaseApiClient {
   protected response;
@@ -35,8 +35,7 @@ export abstract class BaseApiClient {
    */
   protected abstract logError(error: any): void;
 
-  constructor() {
-    // private reporterService: BaseReporter, private loggerService: Logger
+  constructor(private reporterService: BaseReporter, private loggerService: Logger) {
     this.options = null;
   }
 
@@ -60,19 +59,19 @@ export abstract class BaseApiClient {
       }
       this.transformResponse();
     } finally {
-      // this.secureCheck();
-      // this.logRequest();
+      this.secureCheck();
+      this.logRequest();
     }
     return this.response;
   }
 
-  // private secureCheck() {
-  //   fieldsToHideInReport.forEach((f) => this.options && hideValueInObject(this.options, f));
-  // }
+  private secureCheck() {
+    fieldsToHideInReport.forEach((f) => this.options && hideValueInObject(this.options, f));
+  }
 
-  // private logRequest() {
-  //   this.reporterService.reportApiRequest(this.options!, this.response);
-  //   this.loggerService.logApiRequest(JSON.stringify(this.options));
-  //   this.loggerService.logApiResponse(JSON.stringify(this.response));
-  // }
+  private logRequest() {
+    this.reporterService.reportApiRequest(this.options!, this.response);
+    this.loggerService.logApiRequest(JSON.stringify(this.options));
+    this.loggerService.logApiResponse(JSON.stringify(this.response));
+  }
 }
