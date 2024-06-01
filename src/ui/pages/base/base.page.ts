@@ -1,7 +1,13 @@
 import Logger from "../../../utils/logger/logger.js";
-import { logStep } from "../../../utils/reporter/decoratorsOld.js";
+import { logStep } from "../../../utils/reporter/decorators.js";
+import { hideSecretData } from "../../../utils/string/secretData.js";
 
 const TIMEOUT_5_SECS = 5000;
+
+type ActionContext = {
+  isSecretValue?: boolean;
+  timeout?: number;
+};
 
 export class BasePage {
   async findElement(selector: string): Promise<WebdriverIO.Element> {
@@ -42,15 +48,15 @@ export class BasePage {
   }
 
   @logStep("Set {text} into element with selector {selector}")
-  async setValue(selector: string, text: string, timeout?: number) {
+  async setValue(selector: string, text: string, context?: ActionContext) {
     try {
-      const element = await this.waitForElementAndScroll(selector, timeout);
+      const element = await this.waitForElementAndScroll(selector, context?.timeout);
       if (element) {
         await element.setValue(text);
-        Logger.log(`Successfully set "${text}" into element with selector ${selector}`);
+        Logger.log(`Successfully set "${context?.isSecretValue ? hideSecretData(text) : text}" into element with selector ${selector}`);
       }
     } catch (error) {
-      Logger.log(`Failed to set "${text}" into element with selector ${selector}`, "error");
+      Logger.log(`Failed to set "${context?.isSecretValue ? hideSecretData(text) : text}" into element with selector ${selector}`, "error");
       throw error;
     }
   }

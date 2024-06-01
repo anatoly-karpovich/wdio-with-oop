@@ -1,7 +1,7 @@
 import { Product } from "../../../../data/products/product.js";
 import { generateNewProduct } from "../../../../data/products/productGeneration.js";
 import { IProduct } from "../../../../types/products/product.types.js";
-import { logStep } from "../../../../utils/reporter/decoratorsOld.js";
+import { logStep } from "../../../../utils/reporter/decorators.js";
 import homePage from "../../home.page.js";
 import addNewProductPage from "../addNewProduct.page.js";
 import productsListPage from "../productsList.page.js";
@@ -18,7 +18,7 @@ export class ProductPagesService {
     this.product = product;
   }
 
-  async getProduct() {
+  getProduct() {
     if (!this.product) throw new Error("No created product yes");
     return this.product;
   }

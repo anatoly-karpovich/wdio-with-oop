@@ -1,6 +1,7 @@
 import { SignInApiService } from "../../../../api/services/signIn.service.js";
 import { ADMIN_PASSWORD, ADMIN_USERNAME, TESTS } from "../../../../config/environment.js";
 import { ICredentials } from "../../../../types/request/requestTypes.js";
+import { logStep } from "../../../../utils/reporter/decorators.js";
 import signInPage from "../signIn.page.js";
 
 export class SignInService {
@@ -36,6 +37,7 @@ export class SignInService {
     this.token = token;
   }
 
+  @logStep("Sign in via UI")
   async signInUI(credentials: ICredentials) {
     await this.signInPage.fillCredentialsInputs(credentials);
     await this.signInPage.clickSubmitButton();
@@ -47,6 +49,7 @@ export class SignInService {
     await this.signInUI({ username: ADMIN_USERNAME, password: ADMIN_PASSWORD });
   }
 
+  @logStep("Sign in via API")
   async signInAPI(credentials: ICredentials) {
     try {
       const response = await this.service.login(credentials);
@@ -61,6 +64,7 @@ export class SignInService {
     return await this.signInAPI({ username: ADMIN_USERNAME, password: ADMIN_PASSWORD });
   }
 
+  @logStep("Open Sales Portal")
   async openSalesPortal() {
     await this.signInPage.openPage("https://anatoly-karpovich.github.io/aqa-course-project/#");
   }
