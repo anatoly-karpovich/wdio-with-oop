@@ -1,6 +1,6 @@
-import { IResponseFields } from "types/api/apiClient.types.js";
-import { COUNTRIES, ICustomerFromResponse } from "types/customers/customers.types.js";
-import { IProductFromResponse } from "types/products/product.types.js";
+import { IResponseFields } from "../../types/api/apiClient.types.js";
+import { COUNTRIES, ICustomerFromResponse } from "../../types/customers/customers.types.js";
+import { IProductFromResponse } from "../../types/products/product.types.js";
 
 export enum ORDER_STATUSES {
   DRAFT = "Draft",

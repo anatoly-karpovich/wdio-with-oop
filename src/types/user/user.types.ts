@@ -1,5 +1,5 @@
 export interface IUserCredentials {
-  email: string;
+  username: string;
   password: string;
 }
 

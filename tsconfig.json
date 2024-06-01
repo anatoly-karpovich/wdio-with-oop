@@ -3,7 +3,6 @@
         "moduleResolution": "node",
         "module": "ESNext",
         "target": "es2022",
-        "baseUrl": "src",
         "lib": [
             "es2022",
             "dom"
@@ -24,7 +23,8 @@
         "noUnusedParameters": true,
         "noFallthroughCasesInSwitch": true,
         "noImplicitAny": false,
-        "allowSyntheticDefaultImports": true
+        "allowSyntheticDefaultImports": true,
+        "experimentalDecorators": true
     },
     "include": [
         "src",

@@ -1,9 +1,7 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { BaseApiClient } from "./baseApiClient.js";
-import ReporterService from "../../utils/reporter/reporter.js";
-import LoggerService from "../../utils/logger/logger.js";
 
-class AxiosApiClient extends BaseApiClient {
+export class AxiosApiClient extends BaseApiClient {
   protected createRequestInstance() {
     this.request = axios.create();
   }
@@ -26,9 +24,7 @@ class AxiosApiClient extends BaseApiClient {
   }
 
   protected logError(error: any) {
-    console.log("Error", error.isAxiosError ? error.message : error);
+    console.log("Error: ", error.isAxiosError ? error.message : error);
     console.log("Request URL:", this.options?.method, this.options?.url);
   }
 }
-
-export default new AxiosApiClient(ReporterService, LoggerService);

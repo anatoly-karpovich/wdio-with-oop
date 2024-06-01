@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
-import { IProduct } from "types/products/product.types.js";
-import { manufacturerNames } from "types/products/product.types.js";
-import { generateNumberInRange } from "utils/number/number.js";
+import { IProduct } from "../../types/products/product.types.js";
+import { manufacturerNames } from "../../types/products/product.types.js";
+import { generateNumberInRange } from "../../utils/number/number.js";
 
 export function generateNewProduct(customProductFields?: Partial<IProduct>) {
   const product: IProduct = {

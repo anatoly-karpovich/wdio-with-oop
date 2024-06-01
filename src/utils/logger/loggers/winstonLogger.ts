@@ -2,7 +2,7 @@ import * as winston from "winston";
 import _ from "lodash";
 import { Logger } from "./baseLogger.js";
 import ReporterService from "../../reporter/reporter.js";
-import ENVIRONMENT from "../../../config/environment.js";
+import { DEBUG } from "../../../config/environment.js";
 
 type logLevels = "info" | "error";
 
@@ -20,7 +20,7 @@ class WinstonLogger extends Logger {
   log(message: string, level: logLevels = "info") {
     const logEntry = `${new Date().toISOString()} [${level.toUpperCase()}]: ${message}`;
     this.logArray.push(logEntry);
-    if (ENVIRONMENT.DEBUG === "true") {
+    if (DEBUG === "true") {
       this.logger.log({ level, message });
     }
   }
@@ -30,7 +30,7 @@ class WinstonLogger extends Logger {
   }
 
   logApiResponse(responseInfo: string, level: logLevels = "info") {
-    this.log(`API Response: ${responseInfo}`);
+    this.log(`API Response: ${responseInfo}`, level);
   }
 
   sendLogsToReport() {

@@ -1,4 +1,4 @@
-import { IResponseFields } from "types/api/apiClient.types.js";
+import { IResponseFields } from "../../types/api/apiClient.types.js";
 
 export const COUNTRIES = ["USA", "Canada", "Belarus", "Ukraine", "Germany", "France", "Great Britain", "USA"] as const;
 
