@@ -23,6 +23,10 @@ class ProductsListPage extends SalesPortalPage {
   async openEditProductPage(productName: string) {
     await this.click(this["Edit button by product name"](productName));
   }
+
+  async openDeleteProduct(productName: string) {
+    await this.click(this["Delete button by product name"](productName));
+  }
 }
 
 export default new ProductsListPage();

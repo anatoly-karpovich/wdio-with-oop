@@ -4,6 +4,7 @@ import { generateNewProduct } from "../../../data/products/productGeneration.js"
 import { IProduct } from "../../../types/products/product.types.js";
 import { logStep } from "../../../utils/reporter/decorators.js";
 import homePage from "../home.page.js";
+import deleteModal from "../modals/delete.modal.js";
 import addNewProductPage from "../products/addNewProduct.page.js";
 import editProductPage from "../products/editProduct.page.js";
 import productDetailsModal from "../products/modals/productDetails.modal.js";
@@ -23,6 +24,7 @@ export class ProductPagesService {
   private addNewProductPage = addNewProductPage;
   private editProductPage = editProductPage;
   private detailsModal = productDetailsModal;
+  private deleteModal = deleteModal;
 
   currentPage: PRODUCTS_PAGES_NAMES;
   constructor(product?: Product) {
@@ -90,9 +92,13 @@ export class ProductPagesService {
 
   @logStep("Open product details modal")
   async openDetailsModal() {
-    if (!this.product) throw new Error("Unable to open Product Details modal without a Product");
-    await this.productsListPage.openProductDetails(this.product?.getSettings().name);
-    this.currentPage = PRODUCTS_PAGES_NAMES.DETAILS;
+    try {
+      if (!this.product) throw new Error("No product");
+      await this.productsListPage.openProductDetails(this.product?.getSettings().name);
+      this.currentPage = PRODUCTS_PAGES_NAMES.DETAILS;
+    } catch (error) {
+      throw new Error(`Failed to open Product Details modal: ${(error as Error).message}`);
+    }
   }
 
   @logStep("Close product details modal")
@@ -106,9 +112,31 @@ export class ProductPagesService {
   }
 
   async openEditProductPage() {
-    if (!this.product) throw new Error("Unable to open Edit Product Page without a Product");
-    await this.productsListPage.openEditProductPage(this.product?.getSettings().name);
-    this.currentPage = PRODUCTS_PAGES_NAMES.EDIT;
+    try {
+      if (!this.product) throw new Error("No product");
+      await this.productsListPage.openEditProductPage(this.product?.getSettings().name);
+      this.currentPage = PRODUCTS_PAGES_NAMES.EDIT;
+    } catch (error) {
+      throw new Error(`Failed to open Edit product page: ${(error as Error).message}`);
+    }
+  }
+
+  @logStep("Delete product via UI")
+  async deleteProduct() {
+    try {
+      if (!this.product) throw new Error("No product");
+      if (this.currentPage === PRODUCTS_PAGES_NAMES.LIST) {
+        await this.productsListPage.openDeleteProduct(this.product?.getSettings().name);
+        await this.deleteModal.delete();
+        await this.deleteModal.validateNotification(NOTIFICATION_MESSAGES.PRODUCT_DELETED);
+      } else if (this.currentPage === PRODUCTS_PAGES_NAMES.EDIT) {
+        await this.editProductPage.clickOnDeleteButton();
+        await this.deleteModal.delete();
+        await this.deleteModal.validateNotification(NOTIFICATION_MESSAGES.PRODUCT_DELETED);
+      }
+    } catch (error) {
+      throw new Error(`Failed to delete product: ${(error as Error).message}`);
+    }
   }
 
   async removeProduct() {

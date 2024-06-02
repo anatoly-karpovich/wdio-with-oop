@@ -134,4 +134,9 @@ export class BasePage {
       await this.click(foundElement);
     }
   }
+
+  async waitForElementClickable(selector: SelectorOrElement, timeout?: number) {
+    const element = await this.findElement(selector);
+    await browser.waitUntil(async () => await element.isClickable(), { timeout });
+  }
 }

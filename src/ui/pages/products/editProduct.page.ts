@@ -7,6 +7,10 @@ class EditProductPage extends SubmitProductPage {
   async clickOnSaveChangesButton() {
     await this.click(this["Save Changes button"]);
   }
+
+  async clickOnDeleteButton() {
+    await this.click(this["Delete Product button"]);
+  }
 }
 
 export default new EditProductPage();
