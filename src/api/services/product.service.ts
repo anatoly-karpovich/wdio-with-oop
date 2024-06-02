@@ -4,12 +4,16 @@ import { apiConfig } from "../../api/config/apiConfig.js";
 import { logStep } from "../../utils/reporter/decorators.js";
 import { ApiClientFactory } from "../apiClients/apiClientFactory.js";
 import { BaseApiClient } from "../apiClients/baseApiClient.js";
+import { validateResponseSchema } from "../../utils/validations/apiValidation.js";
+import { createdProductSchema, productWithErrorSchema } from "../../data/schema/product.schema.js";
 
 export class ProductsApiService {
   private apiClient: BaseApiClient;
   constructor() {
     this.apiClient = ApiClientFactory.getClient();
   }
+
+  @validateResponseSchema(createdProductSchema, productWithErrorSchema)
   @logStep("Get product via API")
   async getById(id: string, token: string) {
     const options: IRequestOptions = {
@@ -32,6 +36,7 @@ export class ProductsApiService {
     return this.apiClient.sendRequest<IProductsResponse>(options);
   }
 
+  @validateResponseSchema(createdProductSchema, productWithErrorSchema)
   @logStep("Create product via API")
   async create(data: IProduct, token: string) {
     const options: IRequestOptions = {
@@ -44,6 +49,7 @@ export class ProductsApiService {
     return await this.apiClient.sendRequest<IProductResponse>(options);
   }
 
+  @validateResponseSchema(createdProductSchema, productWithErrorSchema)
   @logStep("Update product via API")
   async update(data: IProduct & { _id: string }, token: string) {
     const options: IRequestOptions = {

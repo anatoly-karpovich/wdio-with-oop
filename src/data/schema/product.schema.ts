@@ -15,7 +15,16 @@ export const createdProductSchema = {
       required: ["_id", "name", "amount", "price", "manufacturer", "createdOn"],
     },
     IsSuccess: { type: "boolean" },
-    ErrorMessage: { type: ["string", "null"] },
+    ErrorMessage: { type: "null" },
   },
   required: ["Product", "IsSuccess", "ErrorMessage"],
+};
+
+export const productWithErrorSchema = {
+  type: "object",
+  properties: {
+    IsSuccess: { type: "boolean" },
+    ErrorMessage: { type: "string" },
+  },
+  required: ["IsSuccess", "ErrorMessage"],
 };
