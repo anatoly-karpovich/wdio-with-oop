@@ -10,6 +10,7 @@ export class SignInApiService {
   constructor() {
     this.apiClient = ApiClientFactory.getClient();
   }
+
   @logStep("Sign in via API")
   async login(credentials: IUserCredentials) {
     const options: IRequestOptions = {

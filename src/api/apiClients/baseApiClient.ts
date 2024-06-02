@@ -7,7 +7,6 @@ import { BaseReporter } from "../../utils/reporter/baseReporter.js";
 export abstract class BaseApiClient {
   protected response;
   protected options: IRequestOptions | null;
-  protected request;
 
   /**
    * Creates static instance of request, e.g. this.request = axios.create()
@@ -48,7 +47,6 @@ export abstract class BaseApiClient {
     try {
       this.options = initOptions;
       if (!this.options) throw new Error(`Request options were not provided`);
-      this.createRequestInstance();
       this.transformRequestOptions();
       this.response = await this.send();
       this.transformResponse();

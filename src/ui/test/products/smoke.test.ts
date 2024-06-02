@@ -16,10 +16,8 @@ describe("Products smoke test", () => {
     await productPagesService.openProductsListPage();
     await productPagesService.openAddNewProductPage();
     await productPagesService.populateProduct();
-    const createdProduct = productPagesService.getProduct();
     await productPagesService.openProductDetailsModal();
     const details = await productPagesService.getProductDetailsData();
-    console.log(details);
     expect(details).toMatchObject({ ...productPagesService.getProduct().getProductDataTransformedToDetails() });
   });
 

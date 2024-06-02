@@ -59,6 +59,7 @@ export class ProductPagesService {
     this.setProduct(createdProduct);
   }
 
+  @logStep("Open product details modal")
   async openProductDetailsModal() {
     if (!this.product) throw new Error("Unable to open Product Details modal without a Product");
     await this.productsListPage.openProductDetails(this.product?.getSettings().name);

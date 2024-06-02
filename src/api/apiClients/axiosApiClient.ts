@@ -2,12 +2,11 @@ import axios, { AxiosRequestConfig } from "axios";
 import { BaseApiClient } from "./baseApiClient.js";
 
 export class AxiosApiClient extends BaseApiClient {
-  protected createRequestInstance() {
-    this.request = axios.create();
-  }
+  protected createRequestInstance() {}
 
   protected async send() {
-    return this.request(this.options as AxiosRequestConfig);
+    const request = axios.create();
+    return await request(this.options as AxiosRequestConfig);
   }
 
   protected transformRequestOptions() {

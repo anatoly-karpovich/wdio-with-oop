@@ -49,7 +49,6 @@ export class SignInService {
     await this.signInUI({ username: ADMIN_USERNAME, password: ADMIN_PASSWORD });
   }
 
-  @logStep("Sign in via API")
   async signInAPI(credentials: ICredentials) {
     try {
       const response = await this.service.login(credentials);

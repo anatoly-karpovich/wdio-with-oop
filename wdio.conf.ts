@@ -1,7 +1,8 @@
 import type { Options } from "@wdio/types";
 import * as dotenv from "dotenv";
-import { TESTS } from "./src/config/environment.js";
+import { API_CLIENT, TESTS } from "./src/config/environment.js";
 import { rimraf } from "rimraf";
+import * as os from "os";
 
 dotenv.config();
 
@@ -149,7 +150,13 @@ export const config: Options.Testrunner = {
         outputDir: "allure-results",
         disableWebdriverStepsReporting: true,
         disableWebdriverScreenshotsReporting: false,
-        disableMochaHooks: true,
+        disableMochaHooks: false,
+        reportedEnvironmentVars: {
+          os_version: os.version(),
+          node_version: process.version,
+          Tests: TESTS,
+          ["API client"]: API_CLIENT,
+        },
       },
     ],
   ],
