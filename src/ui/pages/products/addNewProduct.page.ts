@@ -2,29 +2,17 @@ import { IProduct } from "../../../types/products/product.types.js";
 import { SalesPortalPage } from "../base/salesPortal.page.js";
 
 class AddNewProductPage extends SalesPortalPage {
-  get ["Name input"]() {
-    return `#inputName`;
-  }
-
-  get ["Price input"]() {
-    return `#inputPrice`;
-  }
-
-  get ["Amount input"]() {
-    return `#inputAmount`;
-  }
-
-  get ["Notes input"]() {
-    return `#textareaNotes`;
-  }
-
-  get ["Save New Product button"]() {
-    return `#save-new-product`;
-  }
+  readonly "Name input" = "#inputName";
+  readonly "Price input" = "#inputPrice";
+  readonly "Amount input" = "#inputAmount";
+  readonly "Manufacturer input" = "#inputManufacturer";
+  readonly "Manufacturer options" = `${this["Manufacturer input"]} option`;
+  readonly "Notes input" = "#textareaNotes";
+  readonly "Save New Product button" = "#save-new-product";
 
   async fillProductInputs(product: IProduct) {
     await this.setValue(this["Name input"], product.name);
-    //Manufacturer
+    await this.selectDropdownValue(this["Manufacturer input"], this["Manufacturer options"], product.manufacturer);
     await this.setValue(this["Price input"], `${product.price}`);
     await this.setValue(this["Amount input"], `${product.amount}`);
 

@@ -9,18 +9,28 @@ type ActionContext = {
   timeout?: number;
 };
 
+type SelectorOrElement = string | WebdriverIO.Element;
+
+function isStringSelector(selectorOrElement: SelectorOrElement): selectorOrElement is string {
+  return typeof selectorOrElement === "string";
+}
+
 export class BasePage {
-  async findElement(selector: string): Promise<WebdriverIO.Element> {
-    return $(selector);
+  async findElement(selector: SelectorOrElement): Promise<WebdriverIO.Element> {
+    return isStringSelector(selector) ? await $(selector) : selector;
   }
 
-  async waitForElement(selector: string, reverse = false, timeout = TIMEOUT_5_SECS) {
+  async findElementArray(selector: string): Promise<WebdriverIO.ElementArray> {
+    return $$(selector);
+  }
+
+  async waitForElement(selector: SelectorOrElement, reverse = false, timeout = TIMEOUT_5_SECS) {
     const element = await this.findElement(selector);
     element.waitForDisplayed({ timeout, reverse });
     return element;
   }
 
-  async waitForElementAndScroll(selector: string, timeout = TIMEOUT_5_SECS) {
+  async waitForElementAndScroll(selector: SelectorOrElement, timeout = TIMEOUT_5_SECS) {
     try {
       const element = await this.waitForElement(selector, false, timeout);
       await element.waitForExist({ timeout });
@@ -34,7 +44,7 @@ export class BasePage {
   }
 
   @logStep("Click on element with selector ${selector}")
-  async click(selector: string, timeout?: number) {
+  async click(selector: SelectorOrElement, timeout?: number) {
     try {
       const element = await this.waitForElementAndScroll(selector, timeout);
       if (element) {
@@ -48,7 +58,7 @@ export class BasePage {
   }
 
   @logStep("Set {text} into element with selector {selector}")
-  async setValue(selector: string, text: string, context?: ActionContext) {
+  async setValue(selector: SelectorOrElement, text: string, context?: ActionContext) {
     try {
       const element = await this.waitForElementAndScroll(selector, context?.timeout);
       if (element) {
@@ -62,7 +72,7 @@ export class BasePage {
   }
 
   @logStep("Add {text} into element with selector {selector}")
-  async addValue(selector: string, text: string, timeout?: number) {
+  async addValue(selector: SelectorOrElement, text: string, timeout?: number) {
     try {
       const element = await this.waitForElementAndScroll(selector, timeout);
       if (element) {
@@ -76,7 +86,7 @@ export class BasePage {
   }
 
   @logStep("Clear value from element with selector {selector}")
-  async clear(selector: string, timeout?: number) {
+  async clear(selector: SelectorOrElement, timeout?: number) {
     try {
       const element = await this.waitForElementAndScroll(selector, timeout);
       if (element) {
@@ -89,6 +99,15 @@ export class BasePage {
     }
   }
 
+  async getText(selector: SelectorOrElement, timeout?: number) {
+    try {
+      const element = await this.waitForElementAndScroll(selector, timeout);
+      return await element.getText();
+    } catch (error) {
+      throw error;
+    }
+  }
+
   @logStep("Open URL {selector}")
   async openPage(url: string) {
     try {
@@ -97,6 +116,21 @@ export class BasePage {
     } catch (error) {
       Logger.log(`Failed to opened url: ${url}`, "error");
       throw error;
+    }
+  }
+
+  async selectDropdownValue(dropdown: SelectorOrElement, options: string, value: string) {
+    await this.click(dropdown);
+    const containerElements = await this.findElementArray(options);
+    let foundElement: WebdriverIO.Element | undefined = undefined;
+    for (const option of containerElements) {
+      const text = await this.getText(option);
+      if (text === value) {
+        foundElement = option;
+      }
+    }
+    if (foundElement) {
+      await this.click(foundElement);
     }
   }
 }

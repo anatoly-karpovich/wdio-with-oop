@@ -1,9 +1,7 @@
 import { SalesPortalPage } from "./base/salesPortal.page.js";
 
 class HomePage extends SalesPortalPage {
-  get ["Products button"]() {
-    return "#products-from-home";
-  }
+  readonly "Products button" = "#products-from-home";
 
   async openModulePage(moduleName: "Products" | "Customers" | "Orders") {
     if (moduleName === "Products") {

@@ -5,6 +5,7 @@ import { IProduct, IProductFromResponse } from "../../types/products/product.typ
 import { SignInService } from "../../ui/pages/signIn/sign-in-service/signIn.service.js";
 import { HTTP_STATUS_CODES } from "../http/statusCodes.js";
 import { generateNewProduct } from "./productGeneration.js";
+import moment from "moment";
 
 const productApiSservice = new ProductsApiService();
 const signInService = new SignInService();
@@ -24,6 +25,17 @@ export class Product {
 
   getProductFieldsFromSettings() {
     return _.omit(this.settings, ["_id", "createdOn"]);
+  }
+
+  getProductDataTransformedToDetails() {
+    return {
+      name: this.settings.name,
+      amount: String(this.settings.amount),
+      price: String(this.settings.price),
+      createdOn: moment(this.settings.createdOn).format("LLL"),
+      manufacturer: this.settings.manufacturer,
+      notes: this.settings.notes,
+    };
   }
 
   /**

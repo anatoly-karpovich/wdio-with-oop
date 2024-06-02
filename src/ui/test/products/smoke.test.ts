@@ -1,4 +1,4 @@
-import { ProductPagesService } from "../../pages/products/products-service/productPages.service.js";
+import { ProductPagesService } from "../../pages/services/productPages.service.js";
 import { SignInService } from "../../pages/signIn/sign-in-service/signIn.service.js";
 
 const signInService = new SignInService();
@@ -17,7 +17,10 @@ describe("Products smoke test", () => {
     await productPagesService.openAddNewProductPage();
     await productPagesService.populateProduct();
     const createdProduct = productPagesService.getProduct();
-    console.log(createdProduct);
+    await productPagesService.openProductDetailsModal();
+    const details = await productPagesService.getProductDetailsData();
+    console.log(details);
+    expect(details).toMatchObject({ ...productPagesService.getProduct().getProductDataTransformedToDetails() });
   });
 
   afterEach(async () => {
