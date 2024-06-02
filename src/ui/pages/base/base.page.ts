@@ -1,5 +1,5 @@
 import Logger from "../../../utils/logger/logger.js";
-import { logStep } from "../../../utils/reporter/decorators.js";
+import { logAction } from "../../../utils/reporter/decorators.js";
 import { hideSecretData } from "../../../utils/string/secretData.js";
 
 const TIMEOUT_5_SECS = 5000;
@@ -11,7 +11,7 @@ type ActionContext = {
 
 type SelectorOrElement = string | WebdriverIO.Element;
 
-function isStringSelector(selectorOrElement: SelectorOrElement): selectorOrElement is string {
+export function isStringSelector(selectorOrElement: SelectorOrElement): selectorOrElement is string {
   return typeof selectorOrElement === "string";
 }
 
@@ -43,7 +43,7 @@ export class BasePage {
     }
   }
 
-  @logStep("Click on element with selector ${selector}")
+  @logAction("Click on element with selector ${selector}")
   async click(selector: SelectorOrElement, timeout?: number) {
     try {
       const element = await this.waitForElementAndScroll(selector, timeout);
@@ -57,7 +57,7 @@ export class BasePage {
     }
   }
 
-  @logStep("Set {text} into element with selector {selector}")
+  @logAction("Set {text} into element with selector {selector}")
   async setValue(selector: SelectorOrElement, text: string, context?: ActionContext) {
     try {
       const element = await this.waitForElementAndScroll(selector, context?.timeout);
@@ -71,7 +71,7 @@ export class BasePage {
     }
   }
 
-  @logStep("Add {text} into element with selector {selector}")
+  @logAction("Add {text} into element with selector {selector}")
   async addValue(selector: SelectorOrElement, text: string, timeout?: number) {
     try {
       const element = await this.waitForElementAndScroll(selector, timeout);
@@ -85,7 +85,7 @@ export class BasePage {
     }
   }
 
-  @logStep("Clear value from element with selector {selector}")
+  @logAction("Clear value from element with selector {selector}")
   async clear(selector: SelectorOrElement, timeout?: number) {
     try {
       const element = await this.waitForElementAndScroll(selector, timeout);
@@ -108,7 +108,7 @@ export class BasePage {
     }
   }
 
-  @logStep("Open URL {selector}")
+  @logAction("Open URL {selector}")
   async openPage(url: string) {
     try {
       await browser.url(url);
@@ -119,6 +119,7 @@ export class BasePage {
     }
   }
 
+  @logAction("Select dropdown value from {selector}")
   async selectDropdownValue(dropdown: SelectorOrElement, options: string, value: string) {
     await this.click(dropdown);
     const containerElements = await this.findElementArray(options);

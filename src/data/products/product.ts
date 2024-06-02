@@ -63,10 +63,14 @@ export class Product {
 
   static async create(customProductData?: Partial<IProduct>) {
     const productData = generateNewProduct(customProductData);
-    const token = await signInService.getToken();
-    const response = await productApiSservice.create(productData, token);
-    if (response.status !== HTTP_STATUS_CODES.CREATED) throw new Error(`Product was not created`);
-    return new Product(response.data.Product);
+    try {
+      const token = await signInService.getToken();
+      const response = await productApiSservice.create(productData, token);
+      if (response.status !== HTTP_STATUS_CODES.CREATED) throw new Error(`Product was not created`);
+      return new Product(response.data.Product);
+    } catch (error) {
+      throw new Error(`Failed to create product: ${(error as Error).message}`);
+    }
   }
 
   async delete() {

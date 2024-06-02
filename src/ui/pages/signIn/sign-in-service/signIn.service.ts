@@ -2,10 +2,12 @@ import { SignInApiService } from "../../../../api/services/signIn.service.js";
 import { ADMIN_PASSWORD, ADMIN_USERNAME, TESTS } from "../../../../config/environment.js";
 import { ICredentials } from "../../../../types/request/requestTypes.js";
 import { logStep } from "../../../../utils/reporter/decorators.js";
+import homePage from "../../home.page.js";
 import signInPage from "../signIn.page.js";
 
 export class SignInService {
   private signInPage = signInPage;
+  private homePage = homePage;
   private service: SignInApiService;
 
   private token: string | null = null;
@@ -16,12 +18,20 @@ export class SignInService {
   }
 
   async getToken(): Promise<string> {
+    if (this.token) return this.transformToken();
+
     const token = TESTS === "ui" ? await this.getTokenFromBrowser() : await this.getAdminToken();
     if (!token) throw new Error("Failed to get token: no token");
-    return `Bearer ${token}`;
+    return this.transformToken();
   }
 
   private async getTokenFromBrowser() {
+    await browser.waitUntil(
+      async () => {
+        return (await browser.getCookies("Authorization"))[0]?.value;
+      },
+      { timeout: 5000, timeoutMsg: `No authorization token in cookies` }
+    );
     this.token = (await browser.getCookies("Authorization"))[0]?.value;
     return this.token;
   }
@@ -66,5 +76,15 @@ export class SignInService {
   @logStep("Open Sales Portal")
   async openSalesPortal() {
     await this.signInPage.openPage("https://anatoly-karpovich.github.io/aqa-course-project/#");
+  }
+
+  transformToken() {
+    return `Bearer ${this.token}`;
+  }
+
+  async signOut() {
+    if (TESTS === "ui") {
+      await this.homePage.signOut();
+    }
   }
 }
