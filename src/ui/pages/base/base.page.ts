@@ -43,7 +43,7 @@ export class BasePage {
     }
   }
 
-  @logAction("Click on element with selector ${selector}")
+  @logAction("Click on element with selector {selector}")
   async click(selector: SelectorOrElement, timeout?: number) {
     try {
       const element = await this.waitForElementAndScroll(selector, timeout);

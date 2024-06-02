@@ -35,7 +35,7 @@ describe("Products", () => {
   });
 
   afterEach(async () => {
-    await productPagesService.getProduct().delete();
+    await productPagesService.removeProduct();
     await signInService.signOut();
   });
 });

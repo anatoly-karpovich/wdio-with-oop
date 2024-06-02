@@ -17,6 +17,7 @@ enum PRODUCTS_PAGES_NAMES {
 }
 
 export class ProductPagesService {
+  private product: Product | null = null;
   private homePage = homePage;
   private productsListPage = productsListPage;
   private addNewProductPage = addNewProductPage;
@@ -24,7 +25,7 @@ export class ProductPagesService {
   private detailsModal = productDetailsModal;
 
   currentPage: PRODUCTS_PAGES_NAMES;
-  constructor(private product?: Product) {
+  constructor(product?: Product) {
     this.currentPage = PRODUCTS_PAGES_NAMES.LIST;
     if (product) {
       this.product = product;
@@ -94,6 +95,7 @@ export class ProductPagesService {
     this.currentPage = PRODUCTS_PAGES_NAMES.DETAILS;
   }
 
+  @logStep("Close product details modal")
   async closeDetailsModal() {
     await this.detailsModal.close();
   }
@@ -107,5 +109,14 @@ export class ProductPagesService {
     if (!this.product) throw new Error("Unable to open Edit Product Page without a Product");
     await this.productsListPage.openEditProductPage(this.product?.getSettings().name);
     this.currentPage = PRODUCTS_PAGES_NAMES.EDIT;
+  }
+
+  async removeProduct() {
+    try {
+      if (!this.product) throw new Error("Unable to remove product: no product");
+      await this.product?.delete();
+    } catch (error) {
+      throw new Error(`Failed to remove product: ${(error as Error).message}`);
+    }
   }
 }

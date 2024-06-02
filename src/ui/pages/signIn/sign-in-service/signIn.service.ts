@@ -82,6 +82,7 @@ export class SignInService {
     return `Bearer ${this.token}`;
   }
 
+  @logStep("Sign Out")
   async signOut() {
     if (TESTS === "ui") {
       await this.homePage.signOut();
