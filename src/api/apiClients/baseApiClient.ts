@@ -9,11 +9,6 @@ export abstract class BaseApiClient {
   protected options: IRequestOptions | null;
 
   /**
-   * Creates static instance of request, e.g. this.request = axios.create()
-   */
-  protected abstract createRequestInstance(): void;
-
-  /**
    * Transforms requestOptions from IRequestOptions to satisfy the api client options type based on the requestType field of requestOptions
    */
   protected abstract transformRequestOptions(): void;
@@ -21,7 +16,7 @@ export abstract class BaseApiClient {
   /**
    * Transforms response to IResponse
    */
-  protected abstract transformResponse(): void;
+  protected abstract transformResponse(): Promise<void> | void;
 
   /**
    * Sends request with provided options
@@ -49,13 +44,13 @@ export abstract class BaseApiClient {
       if (!this.options) throw new Error(`Request options were not provided`);
       this.transformRequestOptions();
       this.response = await this.send();
-      this.transformResponse();
+      await this.transformResponse();
     } catch (error: any) {
       if (error.response) this.logError(error);
       if (this.response.status >= 500) {
         throw new Error(`Failed to send request. Reason:\n ${(error as Error).message}`, { cause: error });
       }
-      this.transformResponse();
+      await this.transformResponse();
     } finally {
       this.secureCheck();
       this.logRequest();

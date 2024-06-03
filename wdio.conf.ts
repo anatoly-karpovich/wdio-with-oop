@@ -69,9 +69,6 @@ export const config: Options.Testrunner = {
   capabilities: [
     {
       browserName: "chrome",
-      "goog:chromeOptions": {
-        args: ["headless"],
-      },
     },
   ],
 
