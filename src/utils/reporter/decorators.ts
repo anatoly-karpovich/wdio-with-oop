@@ -5,7 +5,7 @@ import _ from "lodash";
 import { isStringSelector } from "../../ui/pages/base/base.page.js";
 
 export function logStep(stepName: string): MethodDecorator {
-  return function (target: any, propertyKey: string | symbol, descriptor: PropertyDescriptor) {
+  return function (_target: any, _propertyKey: string | symbol, descriptor: PropertyDescriptor) {
     const originalMethod = descriptor?.value;
     descriptor.value = async function (...args: any[]) {
       allure.startStep(stepName);
@@ -23,7 +23,7 @@ export function logStep(stepName: string): MethodDecorator {
 }
 
 export function logAction(stepName: string): MethodDecorator {
-  return function (target: any, propertyKey: string | symbol, descriptor: PropertyDescriptor) {
+  return function (_target: any, _propertyKey: string | symbol, descriptor: PropertyDescriptor) {
     const originalMethod = descriptor?.value;
     descriptor.value = async function (...args: any[]) {
       const selectorOrElement = args[0]; // Extract the selector from the arguments

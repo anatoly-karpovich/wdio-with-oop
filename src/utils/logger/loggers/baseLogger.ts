@@ -11,11 +11,11 @@ export abstract class Logger {
     Logger.instance = this;
   }
 
-  log(message: string, logLevel?: logLevels): void {}
-  sendLogsToReport(): void {}
-  logApiRequest(requestInfo: string): void {}
-  logApiResponse(responseInfo: string, level: logLevels = "info"): void {}
-  clearLog(): void {}
+  abstract log(message: string, logLevel?: logLevels): void;
+  abstract sendLogsToReport(): void;
+  abstract logApiRequest(requestInfo: string): void;
+  abstract logApiResponse(responseInfo: string, level?: logLevels): void;
+  abstract clearLog(): void;
 }
 
 type logLevels = "info" | "error" | "warn";

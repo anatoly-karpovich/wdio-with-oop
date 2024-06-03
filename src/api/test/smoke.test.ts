@@ -1,6 +1,5 @@
 import { Product } from "../../data/products/product.js";
 import { generateNewProduct } from "../../data/products/productGeneration.js";
-// import productService from "../services/product.service.js";
 
 describe("Product Api tests", () => {
   let product: Product | null;

@@ -5,7 +5,7 @@ import { logStep } from "../../utils/reporter/decorators.js";
 import { ApiClientFactory } from "../apiClients/apiClientFactory.js";
 import { BaseApiClient } from "../apiClients/baseApiClient.js";
 import { validateResponseSchema } from "../../utils/validations/apiValidation.js";
-import { createdProductSchema, productWithErrorSchema } from "../../data/schema/product.schema.js";
+import { createdProductSchema, productWithErrorSchema, productsSchema } from "../../data/schema/product.schema.js";
 
 export class ProductsApiService {
   private apiClient: BaseApiClient;
@@ -25,6 +25,7 @@ export class ProductsApiService {
     return this.apiClient.sendRequest<IProductResponse>(options);
   }
 
+  @validateResponseSchema(productsSchema, productWithErrorSchema)
   @logStep("Get all products via API")
   async getAll(token: string) {
     const options: IRequestOptions = {
