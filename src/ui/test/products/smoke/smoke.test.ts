@@ -1,6 +1,6 @@
-import { Product } from "../../../data/products/product.js";
-import { ProductPagesService } from "../../pages/services/productPages.service.js";
-import { SignInService } from "../../pages/signIn/sign-in-service/signIn.service.js";
+import { Product } from "../../../../data/products/product.js";
+import { ProductPagesService } from "../../../pages/services/productPages.service.js";
+import { SignInService } from "../../../pages/signIn/sign-in-service/signIn.service.js";
 
 describe("[Products] [Smoke]", () => {
   const signInService = new SignInService();
@@ -16,10 +16,8 @@ describe("[Products] [Smoke]", () => {
     await productPagesService.openProductsListPage();
     await productPagesService.openAddNewProductPage();
     await productPagesService.populateProduct();
-    await productPagesService.openDetailsModal();
-    const details = await productPagesService.getDetailsData();
+    const details = await productPagesService.getDetails();
     expect(details).toMatchObject({ ...productPagesService.getProduct().getProductDataTransformedToDetails() });
-    await productPagesService.closeDetailsModal();
   });
 
   it("Should edit smoke product", async () => {
@@ -28,10 +26,8 @@ describe("[Products] [Smoke]", () => {
     await productPagesService.openProductsListPage();
     await productPagesService.openEditProductPage();
     await productPagesService.populateEditProduct();
-    await productPagesService.openDetailsModal();
-    const details = await productPagesService.getDetailsData();
+    const details = await productPagesService.getDetails();
     expect(details).toMatchObject({ ...productPagesService.getProduct().getProductDataTransformedToDetails() });
-    await productPagesService.closeDetailsModal();
   });
 
   afterEach(async () => {

@@ -1,8 +1,8 @@
-import { Product } from "../../../data/products/product.js";
-import { ProductPagesService } from "../../pages/services/productPages.service.js";
-import { SignInService } from "../../pages/signIn/sign-in-service/signIn.service.js";
+import { Product } from "../../../../data/products/product.js";
+import { ProductPagesService } from "../../../pages/services/productPages.service.js";
+import { SignInService } from "../../../pages/signIn/sign-in-service/signIn.service.js";
 
-describe("[Products] [Delete]", () => {
+describe("[Products] [Smoke]", () => {
   const signInService = new SignInService();
   let productPagesService: ProductPagesService;
 
