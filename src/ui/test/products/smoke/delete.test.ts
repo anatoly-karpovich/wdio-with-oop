@@ -16,6 +16,8 @@ describe("[Products] [Smoke]", () => {
     productPagesService = new ProductPagesService(product);
     await productPagesService.openProductsListPage();
     await productPagesService.deleteProduct();
+    const isProductDeleted = await productPagesService.getProduct().checkProductExists();
+    expect(isProductDeleted).toBe(true);
   });
 
   it("Should delete smoke product on Edit Product page", async () => {
@@ -24,6 +26,8 @@ describe("[Products] [Smoke]", () => {
     await productPagesService.openProductsListPage();
     await productPagesService.openEditProductPage();
     await productPagesService.deleteProduct();
+    const isProductDeleted = await productPagesService.getProduct().checkProductExists();
+    expect(isProductDeleted).toBe(true);
   });
 
   afterEach(async () => {

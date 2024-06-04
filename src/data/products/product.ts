@@ -92,8 +92,25 @@ export class Product {
   async getLatest() {
     const token = await signInService.getToken();
     const response = await productApiSservice.getById(this.settings._id, token);
-    if (response.status !== HTTP_STATUS_CODES.OK) throw new Error(`Product was not found with provided id ${this.settings._id}`);
+    if (response.status !== HTTP_STATUS_CODES.OK) {
+      throw new ResponseError(`Failed to get product`, { status: response.status, IsSuccess: response.data.IsSuccess, ErrorMessage: response.data.ErrorMessage });
+    }
     this.setSettings(response.data.Product);
+    return response;
+  }
+
+  async checkProductExists() {
+    const createProducts = await this.getAllProducts();
+    const deletedProduct = createProducts.data.Products.find((el) => el._id === this.getSettings()._id);
+    return deletedProduct === undefined;
+  }
+
+  async getAllProducts() {
+    const token = await signInService.getToken();
+    const response = await productApiSservice.getAll(token);
+    if (response.status !== HTTP_STATUS_CODES.OK) {
+      throw new ResponseError(`Failed to get product`, { status: response.status, IsSuccess: response.data.IsSuccess, ErrorMessage: response.data.ErrorMessage });
+    }
     return response;
   }
 }

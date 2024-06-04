@@ -10,7 +10,7 @@ export class CustomError extends Error {
 
 export class ResponseError extends CustomError {
   constructor(message: string, cause: ErrorResponseCause) {
-    super(`${message} - Status code: ${cause.status} IsSuccess: ${cause.IsSuccess}, ErrorMessage: ${cause.ErrorMessage}`);
+    super(`${message} - Status code: ${cause.status}, IsSuccess: ${cause.IsSuccess}, ErrorMessage: ${cause.ErrorMessage}`);
   }
 }
 
