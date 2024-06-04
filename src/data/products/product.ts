@@ -6,6 +6,7 @@ import { SignInService } from "../../ui/pages/signIn/sign-in-service/signIn.serv
 import { HTTP_STATUS_CODES } from "../http/statusCodes.js";
 import { generateNewProduct } from "./productGeneration.js";
 import moment from "moment";
+import { DeleteResponseError, ResponseError } from "../../utils/errors/errors.js";
 
 const productApiSservice = new ProductsApiService();
 const signInService = new SignInService();
@@ -63,26 +64,28 @@ export class Product {
 
   static async create(customProductData?: Partial<IProduct>) {
     const productData = generateNewProduct(customProductData);
-    try {
-      const token = await signInService.getToken();
-      const response = await productApiSservice.create(productData, token);
-      if (response.status !== HTTP_STATUS_CODES.CREATED) throw new Error(`Product was not created`);
-      return new Product(response.data.Product);
-    } catch (error) {
-      throw new Error(`Failed to create product: ${(error as Error).message}`);
+    const token = await signInService.getToken();
+    const response = await productApiSservice.create(productData, token);
+    if (response.status !== HTTP_STATUS_CODES.CREATED) {
+      throw new ResponseError(`Failed to create product`, { status: response.status, IsSuccess: response.data.IsSuccess, ErrorMessage: response.data.ErrorMessage });
     }
+    return new Product(response.data.Product);
   }
 
   async delete() {
     const token = await signInService.getToken();
     const response = await this.service.delete(this.settings._id, token);
-    if (response.status !== HTTP_STATUS_CODES.DELETED) throw new Error(`Product was not deleted with provided id ${this.settings._id}`);
+    if (response.status !== HTTP_STATUS_CODES.DELETED) {
+      throw new DeleteResponseError(`Failed to create product`, { status: response.status });
+    }
   }
 
   async edit(newProductSettings: IProduct & Id) {
     const token = await signInService.getToken();
     const response = await this.service.update(newProductSettings, token);
-    if (response.status !== HTTP_STATUS_CODES.OK) throw new Error(`Product was not updated with provided id ${this.settings._id}`);
+    if (response.status !== HTTP_STATUS_CODES.OK) {
+      throw new ResponseError(`Failed to create product`, { status: response.status, IsSuccess: response.data.IsSuccess, ErrorMessage: response.data.ErrorMessage });
+    }
     this.setSettings(response.data.Product);
   }
 
@@ -91,5 +94,6 @@ export class Product {
     const response = await productApiSservice.getById(this.settings._id, token);
     if (response.status !== HTTP_STATUS_CODES.OK) throw new Error(`Product was not found with provided id ${this.settings._id}`);
     this.setSettings(response.data.Product);
+    return response;
   }
 }

@@ -1,7 +1,7 @@
 import { Product } from "../../data/products/product.js";
 import { generateNewProduct } from "../../data/products/productGeneration.js";
 
-describe("Product Api tests", () => {
+describe("[Products] [Smoke]", () => {
   let product: Product | null;
   beforeEach(async () => {});
 

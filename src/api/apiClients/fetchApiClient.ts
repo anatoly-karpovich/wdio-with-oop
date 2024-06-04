@@ -1,6 +1,20 @@
+import { HTTP_STATUS_CODES } from "../../data/http/statusCodes.js";
 import { BaseApiClient } from "./baseApiClient.js";
 
 export class FetchApiClient extends BaseApiClient {
+  protected async transformErrorResponse(): Promise<void> {
+    if (this.error instanceof Response) {
+      const transformedResponse = {
+        status: this.error.status,
+        headers: {},
+        data: this.error.status !== HTTP_STATUS_CODES.DELETED ? await this.response.json() : null,
+      };
+      this.error.headers.forEach((value: string, name: string) => {
+        transformedResponse.headers[name] = value;
+      });
+      this.response = transformedResponse;
+    }
+  }
   protected transformRequestOptions() {
     //ok for JSON
   }
@@ -17,18 +31,19 @@ export class FetchApiClient extends BaseApiClient {
     this.response = transformedResponse;
   }
 
-  protected async send(): Promise<object> {
+  protected async send() {
     let url = this.options?.baseURL + this.options?.url!;
     const response = await fetch(url, {
       body: JSON.stringify(this.options?.data),
       headers: this.options?.headers,
       method: this.options?.method,
     });
-    return response;
+    this.response = response;
+    if (!response.ok) throw response;
   }
 
-  protected logError(error: any): void {
-    console.log("Error: ", error.message);
+  protected logError(): void {
+    console.log("Error: ", this.error instanceof Response ? `Request failed with status code ${this.error.status}` : this.error);
     console.log("Request URL:", this.options?.method, this.options?.url);
   }
 }
