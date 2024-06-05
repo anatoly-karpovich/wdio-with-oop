@@ -1,11 +1,10 @@
 import { faker } from "@faker-js/faker";
-import { Product } from "../../../data/products/product.js";
-import { generateNewProduct } from "../../../data/products/productGeneration.js";
-import { ResponseError } from "../../../utils/errors/errors.js";
+import { Product } from "../../../../data/products/product.js";
+import { generateNewProduct } from "../../../../data/products/productGeneration.js";
+import { ResponseError } from "../../../../utils/errors/errors.js";
 
 describe("[Products] [Validations] [Notes]", () => {
   let product: Product | null;
-  beforeEach(async () => {});
 
   it("Should create product with max length notes", async () => {
     const productData = generateNewProduct({ notes: faker.string.alphanumeric({ length: 250 }) });

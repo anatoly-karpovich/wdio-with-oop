@@ -1,12 +1,16 @@
 import { ApiClientFactory } from "../apiClients/apiClientFactory.js";
 import { apiConfig } from "../../api/config/apiConfig.js";
-import { IRequestOptions } from "../../types/api/apiClient.types.js";
-import type { ICustomer, ICustomerFromResponse, ICustomerResponse, ICustomersResponse } from "../../types/customers/customers.types.js";
+import { IRequestOptions, Id } from "../../types/api/apiClient.types.js";
+import type { ICustomer, ICustomerResponse, ICustomersResponse } from "../../types/customers/customers.types.js";
 import { logStep } from "../../utils/reporter/decorators.js";
+import { BaseApiClient } from "../apiClients/baseApiClient.js";
 
-const apiClient = ApiClientFactory.getClient();
+export class CustomersApiService {
+  private apiClient: BaseApiClient;
+  constructor() {
+    this.apiClient = ApiClientFactory.getClient();
+  }
 
-class CustomerService {
   @logStep("Get customer via API")
   async getById(id: string, token: string) {
     const options: IRequestOptions = {
@@ -15,7 +19,7 @@ class CustomerService {
       method: "get",
       headers: { "Content-Type": "application/json", Authorization: token },
     };
-    return apiClient.sendRequest<ICustomerResponse>(options);
+    return this.apiClient.sendRequest<ICustomerResponse>(options);
   }
 
   @logStep("Get all customers via API")
@@ -27,7 +31,7 @@ class CustomerService {
       method: "get",
       headers: { "Content-Type": "application/json", Authorization: token },
     };
-    return apiClient.sendRequest<ICustomersResponse>(options);
+    return this.apiClient.sendRequest<ICustomersResponse>(options);
   }
 
   @logStep("Create customer via API")
@@ -39,11 +43,11 @@ class CustomerService {
       headers: { "Content-Type": "application/json", Authorization: token },
       data: data,
     };
-    return apiClient.sendRequest<ICustomerResponse>(options);
+    return this.apiClient.sendRequest<ICustomerResponse>(options);
   }
 
   @logStep("Update customer via API")
-  async update(data: ICustomerFromResponse, token: string) {
+  async update(data: ICustomer & Id, token: string) {
     const options: IRequestOptions<ICustomer> = {
       baseURL: apiConfig.baseURL,
       url: apiConfig.baseURL + apiConfig.endpoints.Customers,
@@ -51,7 +55,7 @@ class CustomerService {
       headers: { "Content-Type": "application/json", Authorization: token },
       data: data,
     };
-    return apiClient.sendRequest<ICustomerResponse>(options);
+    return this.apiClient.sendRequest<ICustomerResponse>(options);
   }
 
   @logStep("Delete customer via API")
@@ -62,8 +66,6 @@ class CustomerService {
       method: "delete",
       headers: { "Content-Type": "application/json", Authorization: token },
     };
-    return apiClient.sendRequest<null>(options);
+    return this.apiClient.sendRequest<null>(options);
   }
 }
-
-export default new CustomerService();

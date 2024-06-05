@@ -12,9 +12,7 @@ const productApiSservice = new ProductsApiService();
 const signInService = new SignInService();
 
 export class Product {
-  private constructor(private settings: IProductFromResponse, private service = new ProductsApiService()) {
-    this.setSettings(settings);
-  }
+  private constructor(private settings: IProductFromResponse, private service = new ProductsApiService()) {}
 
   setSettings(productSettings: IProductFromResponse) {
     this.settings = productSettings;
@@ -40,7 +38,7 @@ export class Product {
   }
 
   /**
-   * Creates new generated product.
+   * Creates new generated product from existing.
    *
    * @return {Promise<Product>} A promise that resolves with the product
    */
@@ -62,6 +60,11 @@ export class Product {
     return new Product(productData);
   }
 
+  /**
+   * Creates new generated product.
+   *
+   * @return {Promise<Product>} A promise that resolves with the product
+   */
   static async create(customProductData?: Partial<IProduct>) {
     const productData = generateNewProduct(customProductData);
     const token = await signInService.getToken();
@@ -109,7 +112,7 @@ export class Product {
     const token = await signInService.getToken();
     const response = await productApiSservice.getAll(token);
     if (response.status !== HTTP_STATUS_CODES.OK) {
-      throw new ResponseError(`Failed to get product`, { status: response.status, IsSuccess: response.data.IsSuccess, ErrorMessage: response.data.ErrorMessage });
+      throw new ResponseError(`Failed to get products`, { status: response.status, IsSuccess: response.data.IsSuccess, ErrorMessage: response.data.ErrorMessage });
     }
     return response;
   }

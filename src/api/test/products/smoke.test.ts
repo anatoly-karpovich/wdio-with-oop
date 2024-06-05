@@ -1,5 +1,5 @@
-import { Product } from "../../data/products/product.js";
-import { generateNewProduct } from "../../data/products/productGeneration.js";
+import { Product } from "../../../data/products/product.js";
+import { generateNewProduct } from "../../../data/products/productGeneration.js";
 
 describe("[Products] [Smoke]", () => {
   let product: Product | null;
