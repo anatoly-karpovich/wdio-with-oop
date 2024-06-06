@@ -1,3 +1,5 @@
+import { Customer } from "../../data/customers/customer.js";
+import { Product } from "../../data/products/product.js";
 import { IResponseFields } from "../../types/api/apiClient.types.js";
 import { COUNTRIES, ICustomerFromResponse } from "../../types/customers/customers.types.js";
 import { IProductFromResponse } from "../../types/products/product.types.js";
@@ -98,3 +100,17 @@ export interface IOrderResponse extends IResponseFields {
 export interface IOrdersResponse extends IResponseFields {
   Orders: IOrderFromResponse[];
 }
+
+export interface OrderSettings {
+  customer: Customer;
+  products: Product[];
+  delivery: IDelivery | null;
+  comments: ICommentFromResponse[];
+  history: IHistory[];
+  status: ORDER_STATUSES;
+  total_price: number;
+  _id: string;
+  createdOn: string;
+}
+
+export type InitialOrderSettings = Pick<OrderSettings, "customer" | "products">;
