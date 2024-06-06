@@ -8,10 +8,7 @@ import { validateResponseSchema } from "../../utils/validations/apiValidation.js
 import { createdProductSchema, productWithErrorSchema, productsSchema } from "../../data/schema/product.schema.js";
 
 export class ProductsApiService {
-  private apiClient: BaseApiClient;
-  constructor() {
-    this.apiClient = ApiClientFactory.getClient();
-  }
+  constructor(private apiClient: BaseApiClient = ApiClientFactory.getClient()) {}
 
   @validateResponseSchema(createdProductSchema, productWithErrorSchema)
   @logStep("Get product via API")

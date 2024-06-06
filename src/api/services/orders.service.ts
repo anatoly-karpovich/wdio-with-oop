@@ -3,10 +3,11 @@ import { IRequestOptions, Id } from "../../types/api/apiClient.types.js";
 import type { IAddCommentRequest, IDelivery, IOrderData, IOrderDataWithId, IOrderResponse, IOrderStatus, IOrdersResponse } from "../../types/orders/order.types.js";
 import { logStep } from "../../utils/reporter/decorators.js";
 import { ApiClientFactory } from "../apiClients/apiClientFactory.js";
+import { BaseApiClient } from "../apiClients/baseApiClient.js";
 
-const apiClient = ApiClientFactory.getClient();
+export class OrdersApiService {
+  constructor(private apiClient: BaseApiClient = ApiClientFactory.getClient()) {}
 
-class OrdersService {
   @logStep("Get order via API")
   async getById(id: string, token: string) {
     const options: IRequestOptions = {
@@ -15,7 +16,7 @@ class OrdersService {
       method: "get",
       headers: { Authorization: token },
     };
-    return apiClient.sendRequest<IOrderResponse>(options);
+    return this.apiClient.sendRequest<IOrderResponse>(options);
   }
 
   @logStep("Get orders via API")
@@ -26,7 +27,7 @@ class OrdersService {
       method: "get",
       headers: { Authorization: token },
     };
-    return apiClient.sendRequest<IOrdersResponse>(options);
+    return this.apiClient.sendRequest<IOrdersResponse>(options);
   }
 
   @logStep("Create order via API")
@@ -38,7 +39,7 @@ class OrdersService {
       headers: { Authorization: token },
       data: data,
     };
-    return apiClient.sendRequest<IOrderResponse>(options);
+    return this.apiClient.sendRequest<IOrderResponse>(options);
   }
 
   @logStep("Update order via API")
@@ -50,7 +51,7 @@ class OrdersService {
       headers: { Authorization: token },
       data: data,
     };
-    return apiClient.sendRequest<IOrderResponse>(options);
+    return this.apiClient.sendRequest<IOrderResponse>(options);
   }
 
   @logStep("Update order status via API")
@@ -62,7 +63,7 @@ class OrdersService {
       headers: { Authorization: token },
       data: data,
     };
-    return apiClient.sendRequest<IOrderResponse>(options);
+    return this.apiClient.sendRequest<IOrderResponse>(options);
   }
 
   @logStep("Add or update delivery for order via API")
@@ -74,7 +75,7 @@ class OrdersService {
       headers: { Authorization: token },
       data: data,
     };
-    return apiClient.sendRequest<IOrderResponse>(options);
+    return this.apiClient.sendRequest<IOrderResponse>(options);
   }
 
   @logStep("Receive orders for order via API")
@@ -86,7 +87,7 @@ class OrdersService {
       headers: { Authorization: token },
       data: data,
     };
-    return apiClient.sendRequest<IOrderResponse>(options);
+    return this.apiClient.sendRequest<IOrderResponse>(options);
   }
 
   @logStep("Add comment for order via API")
@@ -98,7 +99,7 @@ class OrdersService {
       headers: { Authorization: token },
       data: data,
     };
-    return apiClient.sendRequest<IOrderResponse>(options);
+    return this.apiClient.sendRequest<IOrderResponse>(options);
   }
 
   @logStep("Delete comment from order via API")
@@ -110,7 +111,7 @@ class OrdersService {
       headers: { Authorization: token },
       data: data,
     };
-    return apiClient.sendRequest<IOrderResponse>(options);
+    return this.apiClient.sendRequest<IOrderResponse>(options);
   }
 
   @logStep("Delete order via API")
@@ -121,8 +122,6 @@ class OrdersService {
       method: "delete",
       headers: { Authorization: token },
     };
-    return apiClient.sendRequest<null>(options);
+    return this.apiClient.sendRequest<null>(options);
   }
 }
-
-export default new OrdersService();

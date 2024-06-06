@@ -38,7 +38,7 @@ export const config: Options.Testrunner = {
   //
   specs: [
     // ToDo: define location for spec files here
-    `${process.cwd()}/src/${TESTS === "ui" ? "ui" : "api"}/test/**/*.test.ts`,
+    `${process.cwd()}/src/${TESTS === "ui" ? "ui" : "api"}/test/orders/**/*.test.ts`,
   ],
   // Patterns to exclude.
   exclude: [

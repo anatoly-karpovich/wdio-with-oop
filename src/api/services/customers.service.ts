@@ -6,10 +6,7 @@ import { logStep } from "../../utils/reporter/decorators.js";
 import { BaseApiClient } from "../apiClients/baseApiClient.js";
 
 export class CustomersApiService {
-  private apiClient: BaseApiClient;
-  constructor() {
-    this.apiClient = ApiClientFactory.getClient();
-  }
+  constructor(private apiClient: BaseApiClient = ApiClientFactory.getClient()) {}
 
   @logStep("Get customer via API")
   async getById(id: string, token: string) {
