@@ -1,20 +1,23 @@
-import { SignInApiService } from "../../../../api/services/signIn.service.js";
-import { ADMIN_PASSWORD, ADMIN_USERNAME, TESTS } from "../../../../config/environment.js";
-import { ICredentials } from "../../../../types/request/requestTypes.js";
-import { logStep } from "../../../../utils/reporter/decorators.js";
-import homePage from "../../home.page.js";
-import signInPage from "../signIn.page.js";
+import { SignInApiService } from "../../../api/services/signIn.service.js";
+import { ADMIN_PASSWORD, ADMIN_USERNAME, TESTS } from "../../../config/environment.js";
+import { ICredentials } from "../../../types/request/requestTypes.js";
+import { logStep } from "../../../utils/reporter/decorators.js";
+import homePage from "../../../ui/pages/home.page.js";
+import signInPage from "../../../ui/pages/signIn/signIn.page.js";
 
 export class SignInService {
+  static instance: SignInService;
   private signInPage = signInPage;
   private homePage = homePage;
-  private service: SignInApiService;
 
   private token: string | null = null;
 
-  constructor(token?: string) {
+  constructor(token?: string, private service: SignInApiService = new SignInApiService()) {
+    if (SignInService.instance) {
+      return SignInService.instance;
+    }
     if (token) this.token = token;
-    this.service = new SignInApiService();
+    SignInService.instance = this;
   }
 
   async getToken(): Promise<string> {

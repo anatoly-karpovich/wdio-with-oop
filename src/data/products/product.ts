@@ -2,7 +2,7 @@ import _ from "lodash";
 import { ProductsApiService } from "../../api/services/product.service.js";
 import { Id } from "../../types/api/apiClient.types.js";
 import { IProduct, IProductFromResponse } from "../../types/products/product.types.js";
-import { SignInService } from "../../ui/pages/signIn/sign-in-service/signIn.service.js";
+import { SignInService } from "../signIn/sign-in-service/signIn.service.js";
 import { HTTP_STATUS_CODES } from "../http/statusCodes.js";
 import { generateNewProduct } from "./productGeneration.js";
 import moment from "moment";

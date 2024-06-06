@@ -5,7 +5,7 @@ import { ICustomer, ICustomerFromResponse } from "../../types/customers/customer
 import { CustomersApiService } from "../../api/services/customers.service.js";
 import { DeleteResponseError, ResponseError } from "../../utils/errors/errors.js";
 import { HTTP_STATUS_CODES } from "../http/statusCodes.js";
-import { SignInService } from "../../ui/pages/signIn/sign-in-service/signIn.service.js";
+import { SignInService } from "../signIn/sign-in-service/signIn.service.js";
 import { generateNewCustomer } from "./customerGeneration.js";
 import { Id } from "../../types/api/apiClient.types.js";
 
